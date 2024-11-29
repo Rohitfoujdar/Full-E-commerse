@@ -9,8 +9,45 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-
+  const onSubmit = async (data) => {
+    const userInfo = {
+      fullname: data.name,
+      email: data.email,
+      password: data.password,
+    };
+  
+    try {
+      // Define the API endpoint
+      const API = "http://localhost:4001/signup";
+  
+      // Perform the fetch request with method, headers, and body
+      const response = await fetch(API, {
+        method: "POST", // Specify the HTTP method
+        headers: {
+          "Content-Type": "application/json", // Ensure JSON data format
+        },
+        body: JSON.stringify(userInfo), // Convert data to JSON string
+      });
+  
+      // Parse the API response
+      const apiData = await response.json();
+  
+      // Handle response and show result in the console
+      console.log("API Response:", apiData);
+  
+      // Handle success (You can redirect, show a message, etc.)
+      if (response.ok) {
+        alert("Signup Successful!");
+      } else {
+        alert("User already exist");
+      }
+      localStorage.setItem("User",JSON.stringify(apiData))
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+  
   return (
     <>
       <div>
