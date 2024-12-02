@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import Home from './home/Home';
 import Contact from './components/Contact';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {Toaster} from "react-hot-toast"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/contact" element={<Contact/>}/>
         </Routes>
         <Footer/>
+        <Toaster/>
        </BrowserRouter>
        </div>
      </>

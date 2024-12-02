@@ -1,9 +1,50 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import toast, {Toaster} from "react-hot-toast"
 
 export default function Login() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+  
+    try {
+      // Define the API endpoint
+      const API = "http://localhost:4001/login";
+  
+      // Perform the fetch request with method, headers, and body
+      const response = await fetch(API, {
+        method: "POST", // Specify the HTTP method
+        headers: {
+          "Content-Type": "application/json", // Ensure JSON data format
+        },
+        body: JSON.stringify(userInfo), // Convert data to JSON string
+      });
+  
+      // Parse the API response
+      const apiData = await response.json();
+  
+      // Handle response and show result in the console
+      console.log("API Response:", apiData);
+  
+      // Handle success (You can redirect, show a message, etc.)
+      if (response.ok) {
+        toast.success('login Successful!')
+      } else {
+        toast.error("invalid username & password");
+      }
+      localStorage.setItem("User",JSON.stringify(apiData))
+    } catch (error) {
+      console.error("Error during signup:", error);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
   
   return (
     <div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import { useForm } from "react-hook-form";
+import toast, {Toaster} from "react-hot-toast"
 
 export default function Signup() {
   const {
@@ -37,14 +38,14 @@ export default function Signup() {
   
       // Handle success (You can redirect, show a message, etc.)
       if (response.ok) {
-        alert("Signup Successful!");
+        toast.success('Signup Successful!')
       } else {
-        alert("User already exist");
+        toast.error("User already exist");
       }
       localStorage.setItem("User",JSON.stringify(apiData))
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     }
   };
   
