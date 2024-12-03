@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import Login from "./Login";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom";
+
 
 export default function Signup() {
+  const navigate = useNavigate(); // Initialize the navigate function
   const {
     register,
     handleSubmit,
@@ -40,11 +43,12 @@ export default function Signup() {
       if (response.ok) {
         toast.success('Signup Successful!')
         localStorage.setItem("User",JSON.stringify(apiData))
+        navigate("/"); // Redirect to the home page
         document.getElementById("my_modal_3").showModal()
-
       } else {
         toast.error("User already exist");
       }
+      localStorage.setItem("User",JSON.stringify(apiData))
     } catch (error) {
       console.error("Error during signup:", error);
       toast.error("An error occurred. Please try again.");

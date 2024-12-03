@@ -1,17 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 export default function Login() {
+  const navigate = useNavigate(); // Initialize the navigate function
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  
-  const navigate = useNavigate();  // Initialize the useNavigate hook
-  
+
   const onSubmit = async (data) => {
     const userInfo = {
       email: data.email,
@@ -19,16 +18,15 @@ export default function Login() {
     };
 
     try {
-      // Define the API endpoint
       const API = "http://localhost:4001/login";
 
       // Perform the fetch request with method, headers, and body
       const response = await fetch(API, {
-        method: "POST", // Specify the HTTP method
+        method: "POST",
         headers: {
-          "Content-Type": "application/json", // Ensure JSON data format
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(userInfo), // Convert data to JSON string
+        body: JSON.stringify(userInfo),
       });
 
       // Parse the API response
@@ -37,12 +35,15 @@ export default function Login() {
       // Handle response and show result in the console
       console.log("API Response:", apiData);
 
-      // Handle success (You can redirect, show a message, etc.)
       if (response.ok) {
+        // toast.success("Login Successful!");
         toast.success("Login Successful!");
-        localStorage.setItem("User", JSON.stringify(apiData)); // Save user data to localStorage
-        document.getElementById("my_modal_3").close(); // Close the modal
-        navigate("/");  // Navigate to the home page
+        document.getElementById("my_modal_3").close()
+        setTimeout(()=>{
+          localStorage.setItem("User", JSON.stringify(apiData)); // Store user data
+        navigate("/"); // Redirect to the home page
+        window.location.reload()
+        },2000)
       } else {
         toast.error("Invalid username & password");
       }
@@ -57,7 +58,9 @@ export default function Login() {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box dark:bg-slate-900 dark:text-white">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
               ✕
             </button>
             <h3 className="font-bold text-lg">Login</h3>
@@ -72,7 +75,9 @@ export default function Login() {
               />
               <br />
               {errors.email && (
-                <span className="text-sm text-red-500">This field is required</span>
+                <span className="text-sm text-red-500">
+                  This field is required
+                </span>
               )}
             </div>
             <div className="mt-4 space-y-2">
@@ -86,7 +91,9 @@ export default function Login() {
               />
               <br />
               {errors.password && (
-                <span className="text-sm text-red-500">This field is required</span>
+                <span className="text-sm text-red-500">
+                  This field is required
+                </span>
               )}
             </div>
             <div className="flex items-center justify-around mt-4">
